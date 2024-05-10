@@ -1,4 +1,4 @@
-package com.rajeshkawali.util;
+package com.training.util;
 
 public class RecordNotFoundException extends Exception {
 

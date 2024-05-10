@@ -1,10 +1,11 @@
-package com.rajeshkawali.dao;
+package com.training.dao;
 
-import com.rajeshkawali.entity.RollingCoilData;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import com.training.entity.RollingCoilData;
 
 import java.util.List;
 

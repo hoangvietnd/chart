@@ -1,16 +1,15 @@
-package com.rajeshkawali.controller;
+package com.training.controller;
 
-import com.rajeshkawali.entity.RollingCoil;
-import com.rajeshkawali.entity.RollingCoilData;
-import com.rajeshkawali.jpo.RollingCoilDataChart;
-import com.rajeshkawali.service.RollingCoilDataService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.List;
+import com.training.jpo.RollingCoilDataChart;
+import com.training.service.RollingCoilDataService;
 
 @Controller
 public class RollingCoilDataController {

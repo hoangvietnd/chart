@@ -1,7 +1,5 @@
-package com.rajeshkawali.jpo;
+package com.training.jpo;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
 import java.util.Date;
 
 public class RollingCoilDataChart {

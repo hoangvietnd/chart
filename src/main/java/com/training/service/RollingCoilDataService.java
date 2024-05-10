@@ -1,11 +1,12 @@
-package com.rajeshkawali.service;
+package com.training.service;
 
-import com.rajeshkawali.dao.RollingCoilDataRepository;
-import com.rajeshkawali.entity.RollingCoilData;
-import com.rajeshkawali.jpo.RollingCoilDataChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import com.training.dao.RollingCoilDataRepository;
+import com.training.entity.RollingCoilData;
+import com.training.jpo.RollingCoilDataChart;
 
 import java.util.ArrayList;
 import java.util.List;

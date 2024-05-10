@@ -1,16 +1,15 @@
-package com.rajeshkawali.service;
-
-import com.rajeshkawali.dao.EmployeeDoa;
-import com.rajeshkawali.dao.RollingCoilDoa;
-import com.rajeshkawali.entity.Employee;
-import com.rajeshkawali.entity.RollingCoil;
-import com.rajeshkawali.util.RecordNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+package com.training.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.training.dao.RollingCoilDoa;
+import com.training.entity.RollingCoil;
+import com.training.util.RecordNotFoundException;
 
 @Service
 public class RollingCoilService {

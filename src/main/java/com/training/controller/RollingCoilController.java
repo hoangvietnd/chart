@@ -1,52 +1,44 @@
-package com.rajeshkawali.controller;
+package com.training.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.rajeshkawali.entity.Employee;
-import com.rajeshkawali.service.EmployeeService;
-import com.rajeshkawali.util.RecordNotFoundException;
+import com.training.entity.RollingCoil;
+import com.training.service.RollingCoilService;
 
 @Controller
-public class EmployeeController {
+public class RollingCoilController {
 
 	@Autowired
-	EmployeeService service;
+	RollingCoilService service;
 
-	@GetMapping("/")
+	@GetMapping("/coil")
 	public String getAllEmployees(Model model) {
-		List<Employee> list = service.getAllEmployees();
+		List<RollingCoil> list = service.getAllRollingCoils();
 		model.addAttribute("name", "Rajesh Kawali");
 		//model.addAttribute("listEmployees", list);
 		return "index";
 	}
 
-	@GetMapping("/list")
+	@GetMapping("/coil/list")
 	public String showEmployee(Model model) {
-		List<Employee> list = service.getAllEmployees();
-		model.addAttribute("employee", service.getAllEmployees());
+		List<RollingCoil> list = service.getAllRollingCoils();
+		model.addAttribute("coil", service.getAllRollingCoils());
 		//model.addAttribute("employee", new Employee(47L,"Rajesh","Kawali","rajeshkawali@gmail.com"));
-		return "listEmployee";
+		return "listCoil";
 	}
+	/*
 	@GetMapping("/addEmployee")
 	public String showAddTodoPage(Model model) {
 		//model.addAttribute("employee", new Employee(47L,"Rajesh","Kawali","rajeshkawali@gmail.com"));
 		model.addAttribute("employee", new Employee());
 		return "editEmployee";
-	}
+	}*/
+	/*
 	@PostMapping("/addEmployee")
 	public String addTodo(@ModelAttribute("employee") Employee employee, BindingResult result) throws RecordNotFoundException {
 		if (result.hasErrors()) {
@@ -80,5 +72,5 @@ public class EmployeeController {
 	public String deleteEmployeeById(@PathVariable("id") Long id) throws RecordNotFoundException {
 		service.deleteEmployeeById(id);
 		return "redirect:/";
-	}
+	}*/
 }

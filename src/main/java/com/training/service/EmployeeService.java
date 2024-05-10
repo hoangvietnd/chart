@@ -1,4 +1,4 @@
-package com.rajeshkawali.service;
+package com.training.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.rajeshkawali.dao.EmployeeDoa;
-import com.rajeshkawali.entity.Employee;
-import com.rajeshkawali.util.RecordNotFoundException;
+import com.training.dao.EmployeeDoa;
+import com.training.entity.Employee;
+import com.training.util.RecordNotFoundException;
 
 @Service
 public class EmployeeService {
