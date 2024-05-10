@@ -4,63 +4,120 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
 <html>
   <head>
     <title>First Web Application</title>
-    <link href="webjars/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/@arction/lcjs@5.1.1/dist/lcjs.iife.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@arction/lcjs@5.1.1/dist/xydata.js"></script>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
+    <script src="/static/lcjs.iife.js"></script>
+    <script src="/static/jquery-3.7.1.min.js"></script>
+
+    <link href="/static/bootstrap.css" rel="stylesheet" />
   </head>
 
   <body>
     <style>
       #lcjs-auto-flexbox {
-        height: 600px !important;
-        padding: 30px;
+        height: 350px !important;
+        /* padding: 30px; */
+      }
+      #datatable .tables {
+        border: 1px solid #1b4a8f;
+        margin-top: 10px;
+        max-height: 300px !important;
+        overflow-y: auto;
+      }
+      #datatable .tables {
+        border-bottom: 1px solid green;
+      }
+      .contain {
+        /*max-width: 1200px;*/
+        margin: auto;
+      }
+      .flex {
+        display: flex;
+        grid-gap: 20px;
+        justify-content: center;
+      }
+      .flex-check {
+        justify-content: start;
+      }
+      .flex-contain {
+        width: 1200px;
       }
     </style>
-
-    <div class="container">
-      <div>
-        <h1>Rolling Coil</h1>
-      </div>
-      <div class="container mb-3 mt-3">
-        <div class="row">
-          <style>
-            .inline-block {
-              display: inline-block;
-            }
-          </style>
-          <div class="inline-block col">
-            <select class="form-select" id="selectCoil">
-              <c:forEach items="${coil}" var="c">
-                <option value="${c.coilNo}">${c.coilNo}</option>
-              </c:forEach>
-            </select>
+    <div class="flex">
+      <div class="flex-contain">
+        <div class="contain m-3">
+          <h1>Rolling Coil</h1>
+        </div>
+        <div class="contain m-3">
+          <div class="row">
+            <style>
+              .inline-block {
+                display: inline-block;
+              }
+            </style>
+            <div class="inline-block col">
+              <select class="form-select" id="selectCoil">
+                <c:forEach items="${coil}" var="c">
+                  <c:choose>
+                    <c:when test="${c.coilNo=='PF044920'}">
+                      <option value="${c.coilNo}" selected>${c.coilNo}</option>
+                    </c:when>
+                    <c:otherwise>
+                      <option value="${c.coilNo}">${c.coilNo}</option>
+                    </c:otherwise>
+                  </c:choose>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="inline-block col">
+              <button class="btn btn-primary" onclick="inquiry()">Inquiry</button>
+            </div>
           </div>
-          <div class="inline-block col">
-            <button class="btn btn-primary" onclick="inquiry()">Inquiry</button>
+        </div>
+        <div class="contain m-3">
+          <div class="flex flex-check">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="temperatureCheck" onclick="updateTemperatureCheck()" checked />
+              <label class="form-check-label" for="flexCheckDefault"> Temperature </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="thicknessCheck" onclick="updateThicknessCheck()" checked />
+              <label class="form-check-label" for="flexCheckChecked"> Thickness </label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="container mb-3 mt-3">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="temperatureCheck" checked />
-          <label class="form-check-label" for="flexCheckDefault"> Temperature </label>
+        <div class="contain m-3">
+          <div id="chart-container"></div>
         </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="thicknesCheck" checked />
-          <label class="form-check-label" for="flexCheckChecked"> Thickness </label>
+        <div class="contain m-3">
+          <div id="datatable">
+            <table class="table table-striped" style="display: none">
+              <caption>
+                Your rolling coil data
+              </caption>
+              <thead>
+                <tr>
+                  <th>Coil No</th>
+                  <th>Time</th>
+                  <th>Seq</th>
+                  <th>Temperature</th>
+                  <th>Thickness</th>
+                </tr>
+              </thead>
+              <tbody>
+                <c:forEach items="${coilData}" var="c">
+                  <tr>
+                    <td>${c.coilNo}"</td>
+                    <td>${c.time}</td>
+                    <td>${c.seq}</td>
+                    <td>${c.temperature}</td>
+                    <td>${c.thickness}</td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-      <div class="m-3">
-        <div id="chart-container"></div>
       </div>
     </div>
-
     <script>
       // https://lightningchart.com/js-charts/interactive-examples/examples/lcjs-example-0009-severalAxisXY.html?isList=false
       // NOTE: For type information in JS applications, download lcjs.iife.d.ts to your codebase.
@@ -79,6 +136,7 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
         const chart = lc.ChartXY({
           theme: Themes.darkGold,
         });
+        chart.setTitle('Rolling Coil Data');
         // https://lightningchart.com/js-charts/interactive-examples/edit/lcjs-example-0009-severalAxisXY.html?isList=false
         // Cache colors used in the example
         const greenFill = new SolidFill({ color: ColorRGBA(60, 179, 113) });
@@ -98,7 +156,7 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
           .setInterval({ start: -10, end: 2000 })
           .setStrokeStyle(greenLine);
 
-        const axisY1 = chart
+        const axisTemperature = chart
           .getDefaultAxisY()
           // Set title of Axis
           .setTitle('Temperature')
@@ -106,30 +164,30 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
           .setInterval({ start: 0, end: 1500 })
           .setStrokeStyle(greenLine);
 
-        const axisY2 = chart
+        const axisThickness = chart
           .addAxisY({
             opposite: true,
           })
           .setTitle('Thickness')
-          .setInterval({ start: 0, end: 200 })
+          .setInterval({ start: 0, end: 210 })
           .setStrokeStyle(pinkLine);
         // Axes 1
-        const splineSeries1 = chart
-          .addSplineSeries({
+        const temperatureSeries = chart
+          .addPointLineSeries({
             xAxis: axisX1,
-            yAxis: axisY1,
+            yAxis: axisTemperature,
           })
           .setStrokeStyle(orangeLine)
           .setPointFillStyle(greenFill)
-          .setName('Time');
+          .setName('Temperature');
         // Axes 2
-        const splineSeries2 = chart
-          .addSplineSeries({
+        const thicknessSeries = chart
+          .addPointLineSeries({
             xAxis: axisX1,
-            yAxis: axisY2,
+            yAxis: axisThickness,
           })
           .setStrokeStyle(pinkLine)
-          .setName('Axis 2');
+          .setName('Thickness');
         // Function to add random values to given series with createProgressiveRandomGenerator
         // https://lightningchart.com/js-charts/interactive-examples/edit/lcjs-example-0009-severalAxisXY.html?isList=false
         const setSeries = (data, splineSeries, type = '') => {
@@ -141,38 +199,150 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
           }
         };
         var tempcheck = document.getElementById('temperatureCheck');
-        var thickcheck = document.getElementById('thicknesCheck');
+        var thickcheck = document.getElementById('thicknessCheck');
 
         if (tempcheck.checked) {
-          setSeries(data, splineSeries1, 'temperature');
+          setSeries(data, temperatureSeries, 'temperature');
         }
 
         if (thickcheck.checked) {
-          setSeries(data, splineSeries2, 'thickness');
+          setSeries(data, thicknessSeries, 'thickness');
         }
+
+        // set scrolling
+        var { AxisTickStrategies, AxisScrollStrategies } = lcjs;
+        // chart.ViewXY.ZoomPanOptions.AutoYFit.Enabled = true;
+        axisX1.setAnimationScroll(true);
+        axisX1.setAnimationsEnabled(true);
+        axisX1.setAxisInteractionZoomByDragging(true);
+        axisX1.setInterval({ start: 0, end: 100 });
+        axisX1.setIntervalRestrictions({ intervalMin: 100, intervalMax: 100 });
+        axisTemperature
+          .setChartInteractionFitByDrag(false)
+          .setChartInteractionZoomByDrag(false)
+          .setChartInteractionPanByDrag(false)
+          .setChartInteractionZoomByWheel(false);
+        axisThickness
+          .setChartInteractionFitByDrag(false)
+          .setChartInteractionZoomByDrag(false)
+          .setChartInteractionPanByDrag(false)
+          .setChartInteractionZoomByWheel(false);
+        // legend
+        debugger;
+        chart.setPadding({ bottom: 70 });
+        const ui = chart.addUIElement(UILayoutBuilders.Row);
+        ui.setPosition({
+          x: 50,
+          y: 10,
+        });
+        const box1 = ui.addElement(UIElementBuilders.CheckBox);
+        const box2 = ui.addElement(UIElementBuilders.CheckBox);
+        window.temperatureCheck = box1;
+        window.thicknessCheck = box2;
+        temperatureSeries.attach(box1);
+        thicknessSeries.attach(box2);
       }
     </script>
     <script>
-      const { lightningChart, SolidFill, SolidLine, ColorRGBA, Themes } = lcjs;
+      const {
+        lightningChart,
+        UIOrigins,
+        UILayoutBuilders,
+        AxisTickStrategies,
+        UIElementBuilders,
+        SolidFill,
+        SolidLine,
+        ColorRGBA,
+        Themes,
+        LegendBox,
+      } = lcjs;
 
       function setChart(value = 'PF044920') {
-        var chart = document.getElementById('chart-1');
-        if (chart) {
-          chart.remove();
-        }
         fetch('http://localhost:8080/coil-data/list-by-coil-no/' + value).then(async (e) => {
+          // debugger
           var data = await e.json();
+          var chart = document.getElementById('chart-1');
+          if (chart) {
+            chart.remove();
+          }
           setData(data);
+          createTable(data);
+        });
+      }
+      function createTable(data) {
+        // debugger
+        var table = document.getElementById('datatable');
+        $(table).hide();
+        var chart = document.getElementById('lcjs-auto-flexbox');
+
+        var tr = '';
+        data.forEach((c) => {
+          tr += `<tr>
+              <td>\${c.coilNo}</td>
+              <td>\${c.time}</td>
+              <td>\${c.seq}</td>
+              <td>\${c.temperature}</td>
+              <td>\${c.thickness}</td>
+           </tr>`;
+        });
+        var tableData =
+          `
+          <div class="tables"> 
+            <table class="table table-striped">
+              <caption>Your rolling coil data</caption>
+              <thead>
+                <tr>
+                  <th>Coil No</th>
+                  <th>Time</th>
+                  <th>Seq</th>
+                  <th>Temperature</th>
+                  <th>Thickness</th>
+                </tr>
+              </thead>
+              <tbody>` +
+          tr +
+          `</tbody>
+            </table>
+          </div>`;
+
+        table.innerHTML = tableData;
+        if (chart) {
+          $(table).before($(chart));
+          $(table).show();
+        }
+      }
+      function setTable(value = 'PF044920') {
+        fetch('http://localhost:8081/api/coil/list/data/page?coilNo=' + value + '&' + 'page=0').then(async (e) => {
+          // debugger
+          var data = await e.json();
+          createTable(data);
+
+          // setData(data)
         });
       }
       setChart();
+      // setTable();
       function inquiry() {
+        // debugger
         var selectCoil = document.getElementById('selectCoil');
         setChart(selectCoil.value);
+        // setTable(selectCoil.value)
       }
     </script>
-    <script src="webjars/jquery/1.9.1/jquery.min.js"></script>
-    <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="webjars/bootstrap-datepicker/1.0.1/js/bootstrap-datepicker.js"></script>
+
+    <script>
+      function updateTemperatureCheck() {
+        if (window.temperatureCheck) {
+          var check = $('#temperatureCheck')[0];
+          check && window.temperatureCheck.setOn(check.checked);
+        }
+      }
+      function updateThicknessCheck() {
+        if (window.thicknessCheck) {
+          var check = $('#thicknessCheck')[0];
+          check && window.thicknessCheck.setOn(check.checked);
+        }
+      }
+    </script>
   </body>
 </html>

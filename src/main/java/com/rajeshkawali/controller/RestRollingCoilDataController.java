@@ -5,10 +5,7 @@ import com.rajeshkawali.jpo.RollingCoilDataChart;
 import com.rajeshkawali.service.RollingCoilDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,13 @@ public class RestRollingCoilDataController {
     @GetMapping("/list-by-coil-no/{coilNo}")
     public List<RollingCoilDataChart> getRollingCoilByCoilId(@PathVariable(value = "coilNo") String coilNo) {
         List<RollingCoilDataChart> dataList = service.getAllDataByCoilNo(coilNo);
+//        model.addAttribute("data", dataList);
+        return dataList;
+    }
+
+    @GetMapping("/list-by-coil-no")
+    public List<RollingCoilDataChart> getRollingCoilByCoilIdOnPage(@RequestParam("coilNo") String coilNo, @RequestParam("page") int page) {
+        List<RollingCoilDataChart> dataList = service.getAllDataByCoilNoOnPage(coilNo, page);
 //        model.addAttribute("data", dataList);
         return dataList;
     }

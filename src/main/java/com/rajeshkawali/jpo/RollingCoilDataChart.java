@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class RollingCoilDataChart {
     private int coilId;
+    private String coilNo;
     private Date time;
     private int seq;
     private int temperature;
@@ -22,6 +23,14 @@ public class RollingCoilDataChart {
         this.coilId = coilId;
     }
 
+    public String getCoilNo() {
+        return coilNo;
+    }
+
+    public void setCoilNo(String coilNo) {
+        this.coilNo = coilNo;
+    }
+    
     public Date getTime() {
         return time;
     }
