@@ -1,8 +1,6 @@
 package com.training.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,50 +16,26 @@ public class RollingCoilService {
 	RollingCoilDoa repository;
 
 	public List<RollingCoil> getAllRollingCoils() {
-		List<RollingCoil> rollingCoilList = repository.findAll();
-
-		if (!rollingCoilList.isEmpty()) {
-			return rollingCoilList;
-		} else {
-			return new ArrayList<RollingCoil>();
-		}
-	}
+        return repository.findAll();
+    }
 
 	public RollingCoil getRollingCoilById(Long id) throws RecordNotFoundException {
-		Optional<RollingCoil> rollingCoil = repository.findById(id);
+        return repository.findById(id).orElseThrow(() -> new RecordNotFoundException("No rolling coil record exist for given id"));
+    }
 
-		if (rollingCoil.isPresent()) {
-			return rollingCoil.get();
-		} else {
-			throw new RecordNotFoundException("No rolling coil record exist for given id");
-		}
-	}
-
-	public RollingCoil createOrUpdateRollingCoil(RollingCoil entity) throws RecordNotFoundException {
-		Optional<RollingCoil> rollingCoil = repository.findById(entity.getId());
-
-		if (rollingCoil.isPresent()) {
-			RollingCoil newEntity = rollingCoil.get();
-			newEntity.setCoilNo(entity.getCoilNo());
-			newEntity.setCoilName(entity.getCoilName());
-
-			newEntity = repository.save(newEntity);
-
-			return newEntity;
-		} else {
-			entity = repository.save(entity);
-			return entity;
-		}
-	}
+	public RollingCoil createOrUpdateRollingCoil(RollingCoil entity) {
+        return repository.findById(entity.getId())
+                .map(rollingCoil -> {
+                    rollingCoil.setCoilNo(entity.getCoilNo());
+                    rollingCoil.setCoilName(entity.getCoilName());
+                    return repository.save(rollingCoil);
+                })
+                .orElseGet(() -> repository.save(entity));
+    }
 
 	public void deleteRollingCoilById(Long id) throws RecordNotFoundException {
-		Optional<RollingCoil> rollingCoil = repository.findById(id);
-
-		if (rollingCoil.isPresent()) {
-			repository.deleteById(id);
-		} else {
-			throw new RecordNotFoundException("No rolling coil record exist for given id");
-		}
-	}
+        RollingCoil rollingCoil = getRollingCoilById(id);
+        repository.delete(rollingCoil);
+    }
 
 }

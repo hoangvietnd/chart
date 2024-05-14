@@ -1,15 +1,14 @@
 package com.training.service;
 
+import com.training.dao.RollingCoilDataRepository;
+import com.training.entity.RollingCoilData;
+import com.training.jpo.RollingCoilDataChart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.training.dao.RollingCoilDataRepository;
-import com.training.entity.RollingCoilData;
-import com.training.jpo.RollingCoilDataChart;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RollingCoilDataService {
@@ -17,46 +16,28 @@ public class RollingCoilDataService {
     RollingCoilDataRepository repository;
 
     public List<RollingCoilData> getAllData() {
-        List<RollingCoilData> dataList = repository.findAll();
-        if (!dataList.isEmpty()) {
-            return dataList;
-        } else {
-            return new ArrayList<RollingCoilData>();
-        }
+        return repository.findAll();
     }
 
     public List<RollingCoilDataChart> getAllDataByCoilNo(String coilNo) {
-        List<RollingCoilData> dataList = repository.findByCoilNo(coilNo);
-        List<RollingCoilDataChart> results = new ArrayList<RollingCoilDataChart>();
-        if (!dataList.isEmpty()) {
-            for (RollingCoilData data : dataList) {
-                RollingCoilDataChart dataChart = new RollingCoilDataChart();
-                dataChart.setCoilId(data.getCoilId());
-                dataChart.setTime(data.getTime());
-                dataChart.setSeq(data.getSeq());
-                dataChart.setTemperature(data.getTemperature());
-                dataChart.setThickness(data.getThickness());
-                dataChart.setCoilNo(data.getRollingCoil().getCoilNo());
-                results.add(dataChart);
-            }
-        }
-        return results;
+        return convertToChart(repository.findByCoilNo(coilNo));
     }
 
     public List<RollingCoilDataChart> getAllDataByCoilNoOnPage(String coilNo, int page) {
-        List<RollingCoilData> dataList = repository.findByCoilNoOnPage(coilNo, PageRequest.of(page, 10));
-        List<RollingCoilDataChart> results = new ArrayList<RollingCoilDataChart>();
-        if (!dataList.isEmpty()) {
-            for (RollingCoilData data : dataList) {
-                RollingCoilDataChart dataChart = new RollingCoilDataChart();
-                dataChart.setCoilId(data.getCoilId());
-                dataChart.setTime(data.getTime());
-                dataChart.setSeq(data.getSeq());
-                dataChart.setTemperature(data.getTemperature());
-                dataChart.setThickness(data.getThickness());
-                results.add(dataChart);
-            }
-        }
-        return results;
+        return convertToChart(repository.findByCoilNoOnPage(coilNo, PageRequest.of(page, 10)));
+    }
+
+    private List<RollingCoilDataChart> convertToChart(List<RollingCoilData> dataList) {
+        return dataList.stream().map(this::constructDataChart).collect(Collectors.toList());
+    }
+
+    private RollingCoilDataChart constructDataChart(RollingCoilData data) {
+        RollingCoilDataChart dataChart = new RollingCoilDataChart();
+        dataChart.setCoilId(data.getCoilId());
+        dataChart.setTime(data.getTime());
+        dataChart.setSeq(data.getSeq());
+        dataChart.setTemperature(data.getTemperature());
+        dataChart.setThickness(data.getThickness());
+        return dataChart;
     }
 }

@@ -25,52 +25,11 @@ public class RollingCoilController {
 	}
 
 	@GetMapping("/coil/list")
-	public String showEmployee(Model model) {
+	public String showRollingCoil(Model model) {
 		List<RollingCoil> list = service.getAllRollingCoils();
 		model.addAttribute("coil", service.getAllRollingCoils());
 		//model.addAttribute("employee", new Employee(47L,"Rajesh","Kawali","rajeshkawali@gmail.com"));
 		return "listCoil";
 	}
-	/*
-	@GetMapping("/addEmployee")
-	public String showAddTodoPage(Model model) {
-		//model.addAttribute("employee", new Employee(47L,"Rajesh","Kawali","rajeshkawali@gmail.com"));
-		model.addAttribute("employee", new Employee());
-		return "editEmployee";
-	}*/
-	/*
-	@PostMapping("/addEmployee")
-	public String addTodo(@ModelAttribute("employee") Employee employee, BindingResult result) throws RecordNotFoundException {
-		if (result.hasErrors()) {
-			return "index";
-		}
-		service.createOrUpdateEmployee(employee);
-		return "redirect:/list";
-	}
-
-	@GetMapping("/showNewEmployeeForm")
-	public String showNewEmployeeForm(Model model) {
-		Employee employee = new Employee();
-		model.addAttribute("employee", employee);
-		return "new_employee";
-	}
-
-	@GetMapping("/showFormForUpdate/{id}")
-	public String showFormForUpdate(@PathVariable(value = "id") Long id, Model model) throws RecordNotFoundException {
-		Employee employee = service.getEmployeeById(id);
-		model.addAttribute("employee", employee);
-		return "update_employee";
-	}
-
-	@PostMapping("/saveEmployee")
-	public String saveEmployee(@ModelAttribute("employee") Employee employee) throws RecordNotFoundException {
-		service.createOrUpdateEmployee(employee);
-		return "redirect:/";
-	}
-
-	@DeleteMapping("/deleteEmployee/{id}")
-	public String deleteEmployeeById(@PathVariable("id") Long id) throws RecordNotFoundException {
-		service.deleteEmployeeById(id);
-		return "redirect:/";
-	}*/
+	
 }
