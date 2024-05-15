@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.training.dao.RollingCoilDoa;
+import com.training.dao.RollingCoilRepository;
 import com.training.entity.RollingCoil;
 import com.training.util.RecordNotFoundException;
 
@@ -13,7 +13,7 @@ import com.training.util.RecordNotFoundException;
 public class RollingCoilService {
 
 	@Autowired
-	RollingCoilDoa repository;
+    RollingCoilRepository repository;
 
 	public List<RollingCoil> getAllRollingCoils() {
         return repository.findAll();

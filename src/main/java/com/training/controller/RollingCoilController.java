@@ -17,7 +17,7 @@ public class RollingCoilController {
 	RollingCoilService service;
 
 	@GetMapping("/coil")
-	public String getAllEmployees(Model model) {
+	public String getAllRollingCoil(Model model) {
 		List<RollingCoil> list = service.getAllRollingCoils();
 		model.addAttribute("name", "Rajesh Kawali");
 		//model.addAttribute("listEmployees", list);
