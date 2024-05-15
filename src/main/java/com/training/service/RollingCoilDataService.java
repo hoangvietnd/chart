@@ -38,6 +38,7 @@ public class RollingCoilDataService {
         dataChart.setSeq(data.getSeq());
         dataChart.setTemperature(data.getTemperature());
         dataChart.setThickness(data.getThickness());
+        dataChart.setCoilNo(data.getRollingCoil().getCoilNo());
         return dataChart;
     }
 }

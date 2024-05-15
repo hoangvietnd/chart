@@ -19,7 +19,7 @@ public class RollingCoilDataController {
     @GetMapping("/list-by-coil-no/{coilNo}")
     public String showData(@PathVariable(value = "coilNo") String coilNo, Model model) {
         List<RollingCoilDataChart> list = service.getAllDataByCoilNo(coilNo);
-        model.addAttribute("coil", list);
+        model.addAttribute("coilData", list);
         //model.addAttribute("employee", new Employee(47L,"Rajesh","Kawali","rajeshkawali@gmail.com"));
         return "listCoil";
     }

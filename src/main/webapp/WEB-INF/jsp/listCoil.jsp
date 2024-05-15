@@ -299,9 +299,11 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
                   <th>Thickness</th>
                 </tr>
               </thead>
-              <tbody>` +
-          tr +
-          `</tbody>
+              <tbody>
+                ` +
+                tr 
+                + `
+              </tbody>
             </table>
           </div>`;
 
@@ -311,15 +313,15 @@ prefix="fmt"%> <%@taglib uri="http://www.springframework.org/tags/form" prefix="
           $(table).show();
         }
       }
-      function setTable(value = 'PF044920') {
-        fetch('http://localhost:8081/api/coil/list/data/page?coilNo=' + value + '&' + 'page=0').then(async (e) => {
-          // debugger
-          var data = await e.json();
-          createTable(data);
+      // function setTable(value = 'PF044920') {
+      //   fetch('http://localhost:8081/api/coil/list/data/page?coilNo=' + value + '&' + 'page=0').then(async (e) => {
+      //     // debugger
+      //     var data = await e.json();
+      //     createTable(data);
 
-          // setData(data)
-        });
-      }
+      //     // setData(data)
+      //   });
+      // }
       setChart();
       // setTable();
       function inquiry() {
